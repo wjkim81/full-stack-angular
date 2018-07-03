@@ -36,14 +36,13 @@
     </div>
   </div>
 
-  <div fxFlex fxFlexOffset="20px" class="form-size">
+  <div fxFlex fxFlexOffset="20px" class="form-size" *ngIf="!(showWaiting || showFeedback)">
     <h3>Send us your Feedback</h3>
-    <p>{{ feedbackForm.value | json }} {{ feedbackForm.status | json }}</p>
-
+    <!--<p>{{ feedbackForm.value | json }} {{ feedbackForm.status | json }}</p>-->
     <form novalidate [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
       <p>
         <md-input-container class="half-width"
-         dividerColor="{{(formErrors.firstname) ? 'warn' : 'primary'}}">
+         dividerColor="{{(formErrors.firstname) ? 'warn' : 'primary' }}">
           <input mdInput formControlName="firstname" placeholder="First Name" type="text" required>
           <md-hint>
             <span [hidden]="!(formErrors.firstname)">
@@ -94,8 +93,26 @@
           <textarea mdInput formControlName="message" placeholder="Your Feedback" rows=12></textarea>
         </md-input-container>
       </p>
-      <button type="submit" md-button class="background-primary text-floral-white" [disabled]="feedbackForm.invalid">Submit</button>
+      <button type="submit" md-button class="background-primary text-floral-white"
+        [disabled]="feedbackForm.invalid">
+        Submit
+      </button>
     </form>
   </div>
 
+  <div *ngIf="showWaiting">
+    <h3>Submitting Form</h3>
+    <md-spinner></md-spinner>
+  </div>
+  
+  <div *ngIf="showFeedback" [@expand]>
+    <h3>Your Submission</h3>
+    <p>First Name: {{feedback.firstname}}</p>
+    <p>Last Name: {{feedback.lastname}}</p>
+    <p>Tel. Number: {{feedback.telnum}}</p>
+    <p>Email: {{feedback.email}}</p>
+    <p>contact You?: {{feedback.agree}}</p>
+    <p>How?: {{feedback.contacttype}}</p>
+    <p>Feedback: {{feedback.message}}</p>
+  </div>
 </div>
